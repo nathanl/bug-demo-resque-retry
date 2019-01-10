@@ -25,6 +25,7 @@ class FailingWithRetryJob
 
   # Perform that raises an exception, but we will retry the job on failure
   def self.perform(some_hash)
+    puts "AAA Redis Retry Key #{redis_retry_key(some_hash)}"
     dup_before_mutate = false # toggle to compare
     if dup_before_mutate
       some_hash = some_hash.dup
