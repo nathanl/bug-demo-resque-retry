@@ -23,5 +23,6 @@ require 'jobs'
 
 desc 'Start the demo using `rackup`'
 task :start do 
-  exec 'rackup config.ru'
+  # avoid a port conflict on my machine
+  exec 'rackup -p 9295 config.ru'
 end

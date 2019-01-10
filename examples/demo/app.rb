@@ -21,7 +21,7 @@ class ResqueRetryExampleApp < Sinatra::Base
   end
 
   post '/failing-with-retry' do 
-    Resque.enqueue(FailingWithRetryJob, rand(10000))
+    Resque.enqueue(FailingWithRetryJob, {some: "hash"})
     redirect "/"
   end
 end

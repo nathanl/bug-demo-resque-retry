@@ -21,10 +21,20 @@ class FailingWithRetryJob
 
   @queue = :testing_failure
   @retry_limit = 4
-  @retry_delay = 20
+  @retry_delay = 2
 
   # Perform that raises an exception, but we will retry the job on failure
-  def self.perform(*args)
+  def self.perform(some_hash)
+    dup_before_mutate = false # toggle to compare
+    if dup_before_mutate
+      some_hash = some_hash.dup
+      some_hash['some_key'] = 'some_val'
+    else
+      # Mutate the arg hash directly. This will cause an orphaned retry job to
+      # be left in Redis, visible in redis-cli with  'keys
+      # resque:resque-retry*'
+      some_hash['some_key'] = 'some_val'
+    end
     raise 'this job is expected to fail! but it will retry =)'
   end
 end
